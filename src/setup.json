@@ -1,14 +1,13 @@
 {
     "title": "ReFa Reader",
-    "api": "https://hyperotlet.huma-num.fr/api",
+    "api": "https://gradim.fh-potsdam.de/omeka-s/api",
     "publicSite": "",
-    "languages": ["en"],
+    "languages": [
+        "en"
+    ],
     "description": {
         "en": "Lorem ipsum dolor sit amet, consectetur adipiscing. Sed vel augue viverra, suscipit nisi sagittis, molestie neque."
     },
     "batch": 10,
-    "itemDetailMetaData": [
-        "dcterms:description"
-    ],
     "mainCategories": []
 }

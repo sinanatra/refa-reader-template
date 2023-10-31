@@ -44,6 +44,7 @@ Every markdown contains metadata to customize the layout:
 title: The title of the essay.
 date: "2023-12-14"
 color: "blue"
+author: "Name of the Author"
 isPublic: true // false
 lang: en
 description: "The description which appears in the home page"
@@ -63,10 +64,7 @@ To Setup the visualisation it is needed to customise the setup file in the `src/
     "languages": ["en"],
     "description": {
         "en": "Text to render in the homepage"
-    },
-    "itemDetailMetaData": [
-        "dcterms:description" // Vocabulary properties to show in the left column of the essay.
-    ],
+    }, 
     "mainCategories": [
         // It is possible to customise the column layout by specifing a category and properties as a js Object. 
         {
