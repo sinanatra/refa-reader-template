@@ -6,7 +6,7 @@ author: Author Name
 isPublic: true
 lang: en
 description: "Lorem ipsum dolor sit amet, consectetur adipiscing. Sed vel augue viverra, suscipit nisi sagittis, molestie neque."
-cover: ""
+cover: "https://gradim.fh-potsdam.de/omeka-s/files/large/f98c8d4baf96f80fed2fa1ded94b4dcb88a34a9d.jpg"
 ---
 
 Lorem ipsum dolor sit amet, consectetur [adipiscing](item/2190). Sed vel augue viverra, suscipit nisi sagittis, molestie neque. Fusce tincidunt quam non metus luctus ultrices. Etiam ullamcorper, sapien non lacinia scelerisque, diam diam ultrices nisi, accumsan ornare massa velit a eros. Suspendisse condimentum lectus leo, vel convallis velit ornare id. [Fusce](item/9862) at ipsum non turpis fermentum fermentum. Curabitur convallis erat id ante maximus porttitor. Sed gravida interdum efficitur. Praesent tincidunt quam elit.
