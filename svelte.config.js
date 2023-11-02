@@ -16,6 +16,9 @@ const config = {
 				fallback: 'index.html',
 			}
 		),
+		paths: {
+            base: process.env.NODE_ENV === 'production' ? '/sveltekit-github-pages' : '',
+        },
 		alias: {
 			'@components': 'src/components',
 			'@stores': 'src/stores.js',
