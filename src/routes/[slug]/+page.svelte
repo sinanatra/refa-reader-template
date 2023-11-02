@@ -94,8 +94,14 @@
 			on:scroll={() => {
 				$scrollX = article?.scrollLeft;
 			}}
-			on:touchmove={() => {
+			on:wheel={() => {
 				$scrollX = article?.scrollLeft;
+				handlePosition();
+			}}
+			on:touchmove={() => {
+				handlePosition();
+			}}
+			on:focus={() => {
 				handlePosition();
 			}}
 			on:click={() => {
