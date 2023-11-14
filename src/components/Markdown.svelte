@@ -1,5 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
+	import { graphScroll, selectedMarkdownItem } from '@stores';
 	export let data;
 	export let items;
 	export let scrollTopVal;
@@ -39,7 +40,7 @@
 		const footnoteNumber = i + 1;
 		const footnoteContent = htmlWithFootnotes.match(
 			new RegExp(`<span id="fn-${footnoteNumber}-content">([^<]+)<\/span>`)
-		)[1];
+		)?.[1];
 		return `<li id="fnref-${footnoteNumber}"> ${footnoteContent}</li>`;
 	}).join('');
 	const finalHtml = `${htmlWithFootnotes}
@@ -47,10 +48,58 @@
 
 	let markdownItems;
 	let offset = 100;
+	let clickedItemId = null;
+
 	onMount(async () => {
 		markdownItems = document?.querySelectorAll('.markdown a[data-id]');
 		adjustOffsetTops(markdownItems);
+
+		markdownItems.forEach((item) => {
+			item.addEventListener('mouseenter', handleMouseEnter);
+			item.addEventListener('mouseleave', handleMouseLeave);
+			item.addEventListener('click', handleClick);
+		});
 	});
+
+	function handleMouseEnter(event) {
+		const dataId = event.currentTarget.getAttribute('data-id');
+		const nodeElement = document.querySelector(`.node[data-id="${dataId}"]`);
+		if (nodeElement) {
+			nodeElement.classList.add('hover');
+		}
+		event.currentTarget.classList.add('hover');
+	}
+
+	function handleMouseLeave(event) {
+		const dataId = event.currentTarget.getAttribute('data-id');
+		const nodeElement = document.querySelector(`.node[data-id="${dataId}"]`);
+		if (nodeElement) {
+			nodeElement.classList.remove('hover');
+		}
+		event.currentTarget.classList.remove('hover');
+	}
+
+	function handleClick(event) {
+		markdownItems.forEach((item) => {
+			const itemDataId = item.getAttribute('data-id');
+			const nodeElement = document.querySelector(`.node[data-id="${itemDataId}"]`);
+			if (nodeElement) {
+				nodeElement.classList.remove('clicked');
+			}
+			item.classList.remove('clicked');
+		});
+		const dataId = event.currentTarget.getAttribute('data-id');
+		const nodeElement = document.querySelector(`.node[data-id="${dataId}"]`);
+		if (nodeElement) {
+			nodeElement.classList.toggle('clicked');
+		}
+		event.currentTarget.classList.toggle('clicked');
+
+		// Store the clicked item's data-id
+		clickedItemId = dataId;
+		$selectedMarkdownItem = dataId;
+	}
+
 
 	function adjustOffsetTops(items) {
 		let lastOffset = null;
@@ -88,7 +137,14 @@
 
 		const selectedItem = document.querySelector('.links:first-of-type');
 
-		if (firstInEssay && secondInEssay && selectedItem && percentageDistance && pixelDistance) {
+		if (
+			$graphScroll == false &&
+			firstInEssay &&
+			secondInEssay &&
+			selectedItem &&
+			percentageDistance &&
+			pixelDistance
+		) {
 			selectedItem?.scrollTo({
 				top: pixelDistance
 			});
@@ -161,6 +217,7 @@
 		text-decoration: underline dotted;
 		text-underline-offset: 2px;
 		text-decoration-color: var(--theme-color);
+		cursor: pointer;
 	}
 
 	:global(.node-highlite) {
@@ -264,5 +321,10 @@
 	:global(sup a) {
 		text-decoration: none !important;
 		color: var(--theme-color) !important;
+	}
+
+	:global(.hover),
+	:global(.clicked) {
+		box-shadow: inset -1px 1px 13px 0px var(--theme-color) !important;
 	}
 </style>
