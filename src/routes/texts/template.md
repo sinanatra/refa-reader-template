@@ -2,7 +2,7 @@
 title: An example of a possible essay with Gradim data.
 date: "2023-12-14"
 color: "red"
-author: Author Name
+author: Mark-Jan
 isPublic: true
 lang: en
 description: "Lorem ipsum dolor sit amet, consectetur adipiscing. Sed vel augue viverra, suscipit nisi sagittis, molestie neque."
