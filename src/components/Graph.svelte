@@ -1,6 +1,6 @@
 <script>
 	import { onMount, afterUpdate } from 'svelte';
-	import { selectedNode, graphSteps } from '@stores';
+	import { graphSteps, graphScroll } from '@stores';
 	import { writable } from 'svelte/store';
 	import GraphSection from '@components/GraphSection.svelte';
 
@@ -113,6 +113,57 @@
 			// }
 		}
 	};
+
+	let idx = 0;
+	$: handleScroll(scrollTopVal);
+
+	function handleScroll(scrollTopVal) {
+		const items = document.querySelectorAll('.links:first-of-type .node');
+		let firstInGraph = items?.[idx]?.offsetTop;
+		let firstInGraphId = items?.[idx]?.getAttribute('data-id');
+		let secondInGraph = items?.[idx + 1]?.offsetTop;
+		let secondInGraphId = items?.[idx + 1]?.getAttribute('data-id');
+		let firstInEssay = document.querySelector(
+			`.node-highlite[data-id="${firstInGraphId}"]`
+		)?.offsetTop;
+		let secondInEssay = document.querySelector(
+			`.node-highlite[data-id="${secondInGraphId}"]`
+		)?.offsetTop;
+		let percentageDistance = getPercentageDistance(scrollTopVal, firstInGraph, secondInGraph);
+		let pixelDiscance = getPixelDistance(percentageDistance, firstInEssay, secondInEssay);
+		const selectedItem = document.querySelector('.markdown__container');
+
+		if (scrollTopVal > secondInGraph) {
+			idx++;
+		}
+
+		if (scrollTopVal < firstInGraph && idx != 0) {
+			idx--;
+		}
+
+		if (
+			$graphScroll == true &&
+			selectedItem &&
+			pixelDiscance &&
+			firstInGraph !== secondInGraph &&
+			pixelDiscance > 0
+		) {
+			selectedItem?.scrollTo({
+				top: pixelDiscance
+			});
+		}
+	}
+	function getPercentageDistance(scrollTop, firstPoint, secondPoint) {
+		const totalDistance = secondPoint - firstPoint;
+		const distanceFromFirst = scrollTop - firstPoint;
+		const percentage = (distanceFromFirst / totalDistance) * 100;
+		return percentage;
+	}
+
+	function getPixelDistance(percentage, firstPoint, secondPoint) {
+		const distanceFromFirst = secondPoint - firstPoint;
+		return firstPoint + (distanceFromFirst * percentage) / 100;
+	}
 </script>
 
 <svelte:window bind:innerWidth={screenSize} />
@@ -129,9 +180,12 @@
 				id="col_{index}"
 				bind:this={col}
 				on:scroll={() => {
+					let col0 = document.querySelector('#col_0');
+					col0.addEventListener('scroll', (event) => {
+						scrollTopVal = col0?.scrollTop;
+					});
 					// getPaginatedData(index, col);
 					handlePosition();
-					scrollTopVal = col?.scrollTop + 100;
 				}}
 				on:click={() => {
 					handlePosition();
@@ -171,6 +225,7 @@
 							{@const dataLen = step.data.filter(
 								(d) => !config.mainCategories.some((cat) => cat.props.includes(d.property))
 							).length}
+
 							{#if filteredSecondaryData.length > 0}
 								<GraphSection
 									site={config.publicSite}
@@ -294,7 +349,7 @@
 	.links:last-of-type {
 		padding-right: 20px;
 	}
-	
+
 	@media only screen and (max-width: 600px) {
 		.links:not(:first-of-type) {
 			margin-left: 30vw;

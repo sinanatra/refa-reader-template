@@ -1,7 +1,9 @@
 <script>
+	import * as config from '../setup.json';
 	import Card from '@components/Card.svelte';
 	import Paths from '@components/Paths.svelte';
-	import { graphSteps, selectedNode } from '@stores';
+	import { graphSteps } from '@stores';
+	import { json } from '@sveltejs/kit';
 	import { createTriplets } from '@utils';
 	export let category;
 	export let data;
@@ -64,6 +66,22 @@
 			data.related = { ...setItems };
 		}
 
+		// fetched items in medias
+		if (data?.['@type'] == 'o:Media' && $graphSteps.length == 1) {
+			const item = data['o:item']['@id'];
+			const responseMedia = await fetch(item);
+			const jsonMedia = await responseMedia.json();
+
+			let mediaItem = {
+				'o:title': "jsonMedia['o:title']",
+				'@id': jsonMedia['@id'],
+				thumbnail_display_urls: jsonMedia['thumbnail_display_urls']
+			};
+
+			// add the media to the data
+			data.related = { ...mediaItem };
+		}
+
 		selectedTriplets = await createTriplets([{ data }]);
 
 		let selectedTripletsData = selectedTriplets.links.filter((d) => {
@@ -117,11 +135,11 @@
 	<div>
 		{#if data && typeof data === 'object' && Object.keys(data).length > 0}
 			{#each data as datum}
-				{#if datum.source && datum.target}
-					{#if newData.some((existingNode) => existingNode?.title === datum.title)}
-						<!-- {datum.source.split('/').slice(-1)[0]}
+				{#if newData.some((existingNode) => existingNode?.title === datum.title)}
+					<!-- {datum.source.split('/').slice(-1)[0]}
 						{datum.target.split('/').slice(-1)[0]} -->
-						{#if datum.source != datum.target}
+					{#if datum.source != datum.target}
+						{#if !datum?.external}
 							<Card
 								{site}
 								{entities}
@@ -134,10 +152,14 @@
 								on:keydown={() => {
 									openNode(datum, index + 1);
 								}}
+								{openNode}
 							/>
-
-							<Paths {datum} {updatePosition} label={datum?.property || ''} />
+						{:else}
+							<a href={datum.target} target="_blank" rel="noreferrer">
+								<Card {site} {entities} {updatePosition} {datum} {essaysItems} {openNode} />
+							</a>
 						{/if}
+						<Paths {datum} {updatePosition} label={datum?.property || ''} />
 					{/if}
 				{:else if datum.source && datum.target && datum.source != datum.target}
 					<Paths {datum} {updatePosition} label={datum?.property || ''} />
