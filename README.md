@@ -1,5 +1,5 @@
 # ReFa Reader Template
-![Screenshot 2023-10-13 at 17 06 33](https://github.com/uclab-potsdam/refa-reader-template/assets/20107875/3cfdb390-9ed6-4a58-83c3-4aa9cd3d80d6)
+![Screenshot 2023-11-23 at 12 41 49](https://github.com/uclab-potsdam/refa-reader-template/assets/20107875/2677533b-edee-42a7-b47b-0cf91a23dc50)
 
 
 An interactive visualization that juxtaposes essays and graphs. 
