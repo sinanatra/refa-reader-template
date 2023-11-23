@@ -20,7 +20,7 @@ const config = {
 	    },
 		prerender: {	
 			crawl: true,
-			entries: ['/','/template', '/text1'] // the static adapter needs to know the existing texts
+			entries: ['*','/template', '/text1'] // the static adapter needs to know the existing texts
 		},
 		alias: {
 			'@components': 'src/components',
