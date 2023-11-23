@@ -15,6 +15,9 @@ const config = {
 			// assets: 'build',
 			fallback: 'index.html',
 		}),
+		paths: {
+			base: process.env.NODE_ENV === "production" ? "/refa-reader-template-static" : "", // name of your repository
+	    },
 		prerender: {	
 			crawl: true,
 			entries: ['/','/template', '/text1'] // the static adapter needs to know the existing texts
