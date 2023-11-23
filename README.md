@@ -36,7 +36,7 @@ yarn build
 
 ### Markdowns
 
-Essays need to be inserted inside the `src/route/essays/` folder.<br>
+Essays need to be inserted inside the `src/route/texts/` folder.<br>
 Every markdown contains metadata to customize the layout:
 
 ```

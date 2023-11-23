@@ -1,5 +1,5 @@
 <script>
-	import * as config from '../../setup.json';
+	import * as config from '@setup';
 	import Markdown from '@components/Markdown.svelte';
 	import Graph from '@components/Graph.svelte';
 	import Svg from '@components/Svg.svelte';
