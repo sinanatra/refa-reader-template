@@ -1,5 +1,4 @@
 <script>
-	import { base } from '$app/paths';
 	export let data;
 	export let lang;
 </script>
@@ -7,7 +6,7 @@
 <div class="columns">
 	{#each data.posts as post}
 		{#if post.meta.isPublic && post.meta.lang == lang}
-			<a href="{base}/{post.path}" target="_self">
+			<a href="{post.path}" target="_self">
 				<div class="column" style="--meta-color: {post.meta.color}">
 					<h2>
 						{post.meta.title}

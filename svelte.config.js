@@ -11,16 +11,11 @@ const config = {
 	],
 	kit: {
 		adapter: adapter(	{
-			// pages: 'build',
-			// assets: 'build',
 			fallback: 'index.html',
 		}),
-		paths: {
-			base: process.env.NODE_ENV === "production" ? "/refa-reader-template-static" : "", // name of your repository
-	    },
 		prerender: {	
 			crawl: true,
-			entries: ['*','/template', '/text1'] // the static adapter needs to know the existing texts
+			entries: ['/template'], // the static adapter needs to know the existing routes
 		},
 		alias: {
 			'@components': 'src/components',

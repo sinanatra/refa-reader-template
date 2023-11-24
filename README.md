@@ -1,4 +1,9 @@
 # ReFa Reader Template
+
+> ⚠️ Important
+
+Compared to the template the `@sveltejs/adapter-static` is used to deploy a static build. All the markdown urls have to be specified in `svelte.config.js`.
+
 ![Screenshot 2023-11-23 at 12 41 49](https://github.com/uclab-potsdam/refa-reader-template/assets/20107875/2677533b-edee-42a7-b47b-0cf91a23dc50)
 
 
