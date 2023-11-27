@@ -18,7 +18,7 @@ const config = {
 		// 	// entries: ['*','/template.html'], // the static adapter needs to know the existing routes
 		// },
 		paths: {
-			base: process.argv.includes('dev') ? '' : process.env.BASE_PATH,
+			// base: process.argv.includes('dev') ? '' : process.env.BASE_PATH,
 			assets: 'https://uclab-potsdam.github.io/refa-reader-template-static',
 		},
 		alias: {
