@@ -16,6 +16,14 @@ const config = {
 		prerender: {
 			crawl: true,
 			entries: ['/template'],
+			handleHttpError: ({ path, message }) => {
+				// ignore deliberate link to shiny 404 page
+				if (path === '/template') {
+					return;
+				}
+				// otherwise fail the build
+				throw new Error(message);
+			}
 		},
 		paths: {
 			base: process.argv.includes('dev') ? '' : process.env.BASE_PATH
