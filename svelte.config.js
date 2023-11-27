@@ -13,9 +13,12 @@ const config = {
 		adapter: adapter(	{
 			fallback: 'index.html',
 		}),
-		prerender: {	
+		prerender: {
 			crawl: true,
-			entries: ['/template'], // the static adapter needs to know the existing routes
+			entries: ['/template'],
+		},
+		paths: {
+			base: process.argv.includes('dev') ? '' : process.env.BASE_PATH
 		},
 		alias: {
 			'@components': 'src/components',
