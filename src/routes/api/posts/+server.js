@@ -7,3 +7,6 @@ export const GET = async () => {
     const sortedPosts = allPosts.sort()
     return json(sortedPosts)
 }
+
+export const prerender = true;
+export const ssr = false;
