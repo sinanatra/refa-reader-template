@@ -7,13 +7,13 @@ export const load = async ({ fetch }) => {
     }
 }
 
-export const entries = (() => {
-	return [
-		{
-			slug: 'template'
-		},
-	];
-})
+// export const entries = (() => {
+// 	return [
+// 		{
+// 			slug: 'template'
+// 		},
+// 	];
+// })
 
 export const prerender = false;
 export const csr = true;
