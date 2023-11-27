@@ -17,6 +17,7 @@ const config = {
 			crawl: true,
 			entries: ['/template'],
 			handleHttpError: ({ path, message }) => {
+				return
 				// ignore deliberate link to shiny 404 page
 				if (path === '/template') {
 					return;
