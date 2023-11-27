@@ -6,5 +6,3 @@ export const load = async ({ fetch }) => {
         posts
     }
 }
-
-// export const prerender = true

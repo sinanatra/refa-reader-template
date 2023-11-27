@@ -7,4 +7,10 @@ export const load = async ({ fetch }) => {
     }
 }
 
-export const prerender = true;
+export const entries = (() => {
+	return [
+		{
+			slug: 'template'
+		}
+	];
+})

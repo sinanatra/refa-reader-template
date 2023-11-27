@@ -13,19 +13,10 @@ const config = {
 		adapter: adapter(	{
 			fallback: 'index.html',
 		}),
-		prerender: {
-			crawl: true,
-			entries: ['/template'],
-			handleHttpError: ({ path, message }) => {
-				return
-				// ignore deliberate link to shiny 404 page
-				if (path === '/template') {
-					return;
-				}
-				// otherwise fail the build
-				throw new Error(message);
-			}
-		},
+		// prerender: {
+		// 	crawl: true,
+		// 	entries: ['/template'],
+		// },
 		paths: {
 			base: process.argv.includes('dev') ? '' : process.env.BASE_PATH
 		},
@@ -37,5 +28,7 @@ const config = {
 		}
 	}
 };
+
+
 
 export default config;
