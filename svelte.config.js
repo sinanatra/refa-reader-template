@@ -10,14 +10,18 @@ const config = {
 		mdsvex(mdsvexConfig)
 	],
 	kit: {
-		adapter: adapter(	{
-			fallback: 'index.html',
-		}),
+		adapter: adapter({
+		    pages: 'build',
+		    assets: 'build',
+		    strict: false,
+		    fallback: '404.html'
+	    }),
 		// prerender: {
 		// 	crawl: true,
 		// 	entries: ['/template'],
 		// },
 		paths: {
+			assets: 'https://uclab-potsdam.github.io/refa-reader-template-statics',
 			base: process.argv.includes('dev') ? '' : process.env.BASE_PATH
 		},
 		alias: {
