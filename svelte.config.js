@@ -11,19 +11,15 @@ const config = {
 	],
 	kit: {
 		adapter: adapter({
-		    pages: 'build',
-		    assets: 'build',
-		    strict: false,
-		    fallback: '404.html'
-	    }),
-		// prerender: {
+			fallback: '404.html'
+		}),
+		// prerender: {	
 		// 	crawl: true,
-		// 	entries: ['/template'],
+		// 	// entries: ['*','/template.html'], // the static adapter needs to know the existing routes
 		// },
 		paths: {
+			base: process.argv.includes('dev') ? '' : process.env.BASE_PATH,
 			assets: 'https://uclab-potsdam.github.io/refa-reader-template-static',
-			// base: process.argv.includes('dev') ? '' : process.env.BASE_PATH
-			base: '/refa-reader-template-static',
 		},
 		alias: {
 			'@components': 'src/components',
@@ -33,7 +29,5 @@ const config = {
 		}
 	}
 };
-
-
 
 export default config;
