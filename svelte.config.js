@@ -21,8 +21,9 @@ const config = {
 		// 	entries: ['/template'],
 		// },
 		paths: {
-			assets: 'https://uclab-potsdam.github.io/refa-reader-template-statics',
-			base: process.argv.includes('dev') ? '' : process.env.BASE_PATH
+			assets: 'https://uclab-potsdam.github.io/refa-reader-template-static',
+			// base: process.argv.includes('dev') ? '' : process.env.BASE_PATH
+			base: '/refa-reader-template-static',
 		},
 		alias: {
 			'@components': 'src/components',
