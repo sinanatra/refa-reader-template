@@ -9,4 +9,3 @@ export const GET = async () => {
 }
 
 export const prerender = true;
-export const ssr = false;

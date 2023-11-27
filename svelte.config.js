@@ -2,6 +2,7 @@ import adapter from '@sveltejs/adapter-static';
 
 import { mdsvex } from 'mdsvex';
 import mdsvexConfig from './mdsvex.config.js';
+const dev = process.argv.includes('dev');
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -13,13 +14,8 @@ const config = {
 		adapter: adapter({
 			fallback: '404.html'
 		}),
-		// prerender: {	
-		// 	crawl: true,
-		// 	// entries: ['*','/template.html'], // the static adapter needs to know the existing routes
-		// },
 		paths: {
-			// base: process.argv.includes('dev') ? '' : process.env.BASE_PATH,
-			assets: 'https://uclab-potsdam.github.io/refa-reader-template-static',
+			base: dev ? '' : process.env.BASE_PATH,
 		},
 		alias: {
 			'@components': 'src/components',
