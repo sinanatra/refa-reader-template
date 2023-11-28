@@ -7,10 +7,14 @@ export const load = async ({ fetch }) => {
     }
 }
 
-export const entries = (() => {
-	return [
-		{
-			slug: 'template'
-		},
-	];
-})
+import { fetchMarkdownData } from '$lib/utils'
+
+export const prerender = true;
+export const entries = async () => {
+    const allPosts = await fetchMarkdownData()
+    const sortedPosts = allPosts.sort()
+
+    return sortedPosts.map(post => ({
+        slug: post.path.replaceAll("/",""),
+    }));
+}
