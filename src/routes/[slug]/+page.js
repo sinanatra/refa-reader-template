@@ -6,3 +6,11 @@ export const load = async ({ fetch }) => {
         posts
     }
 }
+
+export const entries = (() => {
+	return [
+		{
+			slug: 'template'
+		},
+	];
+})
