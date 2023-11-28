@@ -33,7 +33,9 @@ yarn dev
 yarn build
 ```
 
-5. Preview the production build with `npm run preview`.
+5. Preview the production build with `yarn preview`. 
+
+6. Deploy to github with : `yarn deploy`
 
 ## Configuration
 
@@ -77,14 +79,11 @@ To Setup the visualisation it is needed to customise the setup file in the `src/
                 "shows features of",
             ]
         },
-        {
-            "key": "Documentation",
-            "props": [
-                "is documented in",
-                "incorporates"
-            ]
-        }
-    ]
+       ...
+    ],
+    "descriptionSeo": "metadata field for SEO",
+    "imageSeo": "image path SEO"
+
 }
 ``
 
