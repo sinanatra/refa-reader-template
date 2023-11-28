@@ -4,14 +4,15 @@
 	import Graph from '@components/Graph.svelte';
 	import Svg from '@components/Svg.svelte';
 	import { page } from '$app/stores';
+	import { writable } from 'svelte/store';
 	import { items, hoverNode, scrollX, graphScroll } from '@stores';
 	import { onMount } from 'svelte';
 	import { extractLinks, createTriplets } from '@utils';
-	import { writable } from 'svelte/store';
 	export let data;
+	let screenSize;
 
 	let md;
-	let textData = [];
+	let essayData = [];
 	let triplets, itemsJson;
 	let visibleItemsID = [];
 	let essaysItems = [];
@@ -29,8 +30,8 @@
 	}
 
 	onMount(async () => {
-		textData = [...data.posts].find((d) => d.path.includes($page.params.slug));
-		itemsJson = await extractLinks(textData.text);
+		essayData = [...data.posts].find((d) => d.path.includes($page.params.slug));
+		itemsJson = await extractLinks(essayData.text);
 		visibleItemsID = itemsJson
 			.filter((obj) => !obj.set)
 			.map((obj) => `${config.api}/resources/${obj.data?.['o:id']}`);
@@ -73,9 +74,9 @@
 	});
 </script>
 
-<svelte:window on:resize={handlePosition} on:click={handlePosition} />
+<svelte:window bind:innerWidth={screenSize} on:resize={handlePosition} on:click={handlePosition} />
 <div>
-	{#if textData == undefined && triplets == undefined}
+	{#if essayData == undefined && triplets == undefined}
 		<article>
 			<section class="short_text">
 				<h4>404 Page not found</h4>
@@ -89,7 +90,7 @@
 		</article>
 	{:else}
 		<article
-			style="--theme-color: {textData.meta?.color || 'blue'}"
+			style="--theme-color: {essayData.meta?.color || 'blue'}"
 			on:resize={handlePosition}
 			on:scroll={() => {
 				$scrollX = article?.scrollLeft;
@@ -107,27 +108,34 @@
 			<section
 				class="markdown__container"
 				bind:this={md}
-				on:scroll={() => {
+				on:wheel={() => {
 					handlePosition();
-					scrollTopVal = md?.scrollTop;
 					$graphScroll = false;
+					scrollTopVal = md?.scrollTop;
+				}}
+				on:scroll={() => {
+					if (screenSize < 1000) {
+						handlePosition();
+						scrollTopVal = md?.scrollTop;
+						$graphScroll = false;
+					}
 				}}
 			>
-				<Markdown data={textData} items={itemsJson} {scrollTopVal} />
+				<Markdown data={essayData} items={itemsJson} {scrollTopVal} />
 			</section>
 			<section
 				class="graph__container"
 				on:wheel={() => {
-					$graphScroll = true;
-				}}
-				on:scroll={() => {
-					$graphScroll = true;
+					if (screenSize > 1000) {
+						$graphScroll = true;
+					}
 				}}
 			>
 				<Graph
 					items={itemsJson}
-					{essaysItems}
 					data={$items}
+					{screenSize}
+					{essaysItems}
 					{visibleItemsID}
 					{handlePosition}
 					{updatePosition}
@@ -138,6 +146,27 @@
 		</article>
 	{/if}
 </div>
+<svelte:head>
+	{#if essayData != undefined}
+		<title>{essayData?.meta?.title || config.title}</title>
+		<meta name="description" content={essayData?.meta?.description || config.descriptionSeo} />
+		<meta property="og:url" content={$page.url.origin} />
+		<meta property="og:title" content={essayData?.meta?.title || config.title} />
+		<meta
+			property="og:description"
+			content={essayData?.meta?.description || config.descriptionSeo}
+		/>
+		<meta property="og:image" content={essayData?.meta?.cover || config.imageSeo} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content={$page.url.origin} />
+		<meta name="twitter:title" content={essayData?.meta?.title || config.title} />
+		<meta
+			name="twitter:description"
+			content={essayData?.meta?.description || config.descriptionSeo}
+		/>
+		<meta name="twitter:image" content={essayData?.meta?.cover || config.imageSeo} />
+	{/if}
+</svelte:head>
 
 <style>
 	article {
@@ -157,7 +186,7 @@
 		box-shadow: -10px 0px 10px 0px var(--light-grey);
 		margin-left: 30vw;
 		padding-left: 10px;
-		max-width: 640px;
+		max-width: 600px;
 		flex: 0 0 40vw;
 		overflow-x: scroll;
 	}
@@ -166,19 +195,23 @@
 		flex: 3;
 	}
 
-	@media only screen and (max-width: 600px) {
+	@media only screen and (max-width: 800px) {
 		.markdown__container {
-			flex: 3;
 			padding: 0.5rem;
-			flex-basis: 70vw;
-			min-width: 70vw;
+			min-width: 50vw;
 			overflow-x: hidden;
 			overflow-y: scroll;
 			margin-left: 0;
 		}
+	}
 
-		.graph__container {
-			flex: 1;
+	@media only screen and (max-width: 600px) {
+		.markdown__container {
+			min-width: 80vw;
+			padding: 0.5rem;
+			overflow-x: hidden;
+			overflow-y: scroll;
+			margin-left: 0;
 		}
 	}
 </style>

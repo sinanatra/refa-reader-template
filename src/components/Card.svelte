@@ -14,7 +14,6 @@
 	afterUpdate(() => {
 		const currentNode = datum.source;
 		if (currentNode == `item_${$selectedMarkdownItem}` && currentNode != previousNode) {
-			console.log('here', currentNode, $selectedMarkdownItem);
 			openNode(datum, 1);
 		}
 		previousNode = `item_${$selectedMarkdownItem}`;
@@ -43,7 +42,7 @@
 	$: source = datum.source.split('/').slice(-1)[0];
 	$: target = datum.target.split('/').slice(-1)[0];
 
-	let essaysItemsLinks = essaysItems.find((d) => d.id == target);
+	$: essaysItemsLinks = essaysItems.find((d) => d.id == target);
 	$: selected = $graphSteps.some((d) => d?.id == datum.target);
 
 	let card;
@@ -105,17 +104,17 @@
 	{/if}
 
 	<!-- not title == is media -->
-	<!-- {#if site}
-		{#if datum.title == undefined}
-			<a class="link" href={`${site}/media/${id}`} target="_blank" rel="noopener noreferrer"
+	{#if site}
+		{#if datum.title == undefined || datum.title.length == 1}
+			<a class="link" href={`${site}/media/${target}`} target="_blank" rel="noopener noreferrer"
 				>→ Metadata</a
 			>
 		{:else}
-			<a class="link" href={`${site}/item/${id}`} target="_blank" rel="noopener noreferrer"
+			<a class="link" href={`${site}/item/${target}`} target="_blank" rel="noopener noreferrer"
 				>→ Metadata</a
 			>
 		{/if}
-	{/if} -->
+	{/if}
 </div>
 
 <style>
