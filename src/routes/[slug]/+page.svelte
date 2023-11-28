@@ -1,14 +1,15 @@
 <script>
-	import * as config from '../../setup.json';
+	import * as config from '@setup';
 	import Markdown from '@components/Markdown.svelte';
 	import Graph from '@components/Graph.svelte';
 	import Svg from '@components/Svg.svelte';
 	import { page } from '$app/stores';
+	import { writable } from 'svelte/store';
 	import { items, hoverNode, scrollX, graphScroll } from '@stores';
 	import { onMount } from 'svelte';
 	import { extractLinks, createTriplets } from '@utils';
-	import { writable } from 'svelte/store';
 	export let data;
+	let screenSize;
 
 	let md;
 	let textData = [];
@@ -73,7 +74,7 @@
 	});
 </script>
 
-<svelte:window on:resize={handlePosition} on:click={handlePosition} />
+<svelte:window bind:innerWidth={screenSize} on:resize={handlePosition} on:click={handlePosition} />
 <div>
 	{#if textData == undefined && triplets == undefined}
 		<article>
@@ -107,10 +108,17 @@
 			<section
 				class="markdown__container"
 				bind:this={md}
-				on:scroll={() => {
+				on:wheel={() => {
 					handlePosition();
-					scrollTopVal = md?.scrollTop;
 					$graphScroll = false;
+					scrollTopVal = md?.scrollTop;
+				}}
+				on:scroll={() => {
+					if (screenSize < 1000) {
+						handlePosition();
+						scrollTopVal = md?.scrollTop;
+						$graphScroll = false;
+					}
 				}}
 			>
 				<Markdown data={textData} items={itemsJson} {scrollTopVal} />
@@ -118,16 +126,16 @@
 			<section
 				class="graph__container"
 				on:wheel={() => {
-					$graphScroll = true;
-				}}
-				on:scroll={() => {
-					$graphScroll = true;
+					if (screenSize > 1000) {
+						$graphScroll = true;
+					}
 				}}
 			>
 				<Graph
 					items={itemsJson}
-					{essaysItems}
 					data={$items}
+					{screenSize}
+					{essaysItems}
 					{visibleItemsID}
 					{handlePosition}
 					{updatePosition}
@@ -157,7 +165,7 @@
 		box-shadow: -10px 0px 10px 0px var(--light-grey);
 		margin-left: 30vw;
 		padding-left: 10px;
-		max-width: 640px;
+		max-width: 600px;
 		flex: 0 0 40vw;
 		overflow-x: scroll;
 	}
@@ -166,19 +174,23 @@
 		flex: 3;
 	}
 
-	@media only screen and (max-width: 600px) {
+	@media only screen and (max-width: 800px) {
 		.markdown__container {
-			flex: 3;
 			padding: 0.5rem;
-			flex-basis: 70vw;
-			min-width: 70vw;
+			min-width: 50vw;
 			overflow-x: hidden;
 			overflow-y: scroll;
 			margin-left: 0;
 		}
+	}
 
-		.graph__container {
-			flex: 1;
+	@media only screen and (max-width: 600px) {
+		.markdown__container {
+			min-width: 80vw;
+			padding: 0.5rem;
+			overflow-x: hidden;
+			overflow-y: scroll;
+			margin-left: 0;
 		}
 	}
 </style>

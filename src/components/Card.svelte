@@ -14,7 +14,6 @@
 	afterUpdate(() => {
 		const currentNode = datum.source;
 		if (currentNode == `item_${$selectedMarkdownItem}` && currentNode != previousNode) {
-			console.log('here', currentNode, $selectedMarkdownItem);
 			openNode(datum, 1);
 		}
 		previousNode = `item_${$selectedMarkdownItem}`;
@@ -43,7 +42,7 @@
 	$: source = datum.source.split('/').slice(-1)[0];
 	$: target = datum.target.split('/').slice(-1)[0];
 
-	let essaysItemsLinks = essaysItems.find((d) => d.id == target);
+	$: essaysItemsLinks = essaysItems.find((d) => d.id == target);
 	$: selected = $graphSteps.some((d) => d?.id == datum.target);
 
 	let card;

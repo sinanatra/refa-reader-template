@@ -9,5 +9,8 @@
         "en": "Lorem ipsum dolor sit amet, consectetur adipiscing. Sed vel augue viverra, suscipit nisi sagittis, molestie neque."
     },
     "batch": 30,
-    "mainCategories": []
+    "mainCategories": [],
+    "descriptionSeo": "Lorem ipsum dolor sit amet.",
+    "imageSeo": "https://gradim.fh-potsdam.de/omeka-s/files/large/FB_P_YEM_86002_0687_CS_1.jpg"
+
 }
