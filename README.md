@@ -86,5 +86,4 @@ To configure the graph visualisation it is needed to customise the setup file in
     "imageSeo": "image path SEO"
 
 }
-``
-
+```
