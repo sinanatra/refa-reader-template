@@ -1,6 +1,7 @@
 # ReFa Reader Template
 
-> ⚠️ Compared to the [refa-reader](https://github.com/uclab-potsdam/refa-reader) the `@sveltejs/adapter-static` is used to deploy a static build. All the markdown urls are crawled in the `src/routes/[slug]/+page.js`:
+> ⚠️ Compared to the [refa-reader](https://github.com/uclab-potsdam/refa-reader) the `@sveltejs/adapter-static` is used to deploy a static build.    
+> All the markdown urls are crawled in the `src/routes/[slug]/+page.js`:
 
 ![Screenshot 2023-11-23 at 12 41 49](https://github.com/uclab-potsdam/refa-reader-template/assets/20107875/2677533b-edee-42a7-b47b-0cf91a23dc50)
 
@@ -11,14 +12,15 @@ It allows readers to browse items from Omeka-S-based collections, by accessing t
 ## Installation
 ### Project setup
 
-1. In Terminal, go to your production folder:
+1. In the Terminal, go to your production folder:
+
 ```
 cd path/to/my/folder
 ```
 
 2. Clone this repository
 ```
-git clone https://github.com/uclab-potsdam/refa-reader-template.git NAME-OF-MY-FOLDER
+git clone https://github.com/sinanatra/refa-reader-template.git NAME-OF-MY-FOLDER
 cd NAME-OF-MY-FOLDER
 ```
 
@@ -35,7 +37,7 @@ yarn build
 
 5. Preview the production build with `yarn preview`. 
 
-6. Deploy to github with : `yarn deploy`
+6. Deploy to Github with : `yarn deploy`
 
 ## Configuration
 
@@ -58,7 +60,7 @@ cover: "https://example.com/image.jpg"
 ```
 
 ### Setup
-To Setup the visualisation it is needed to customise the setup file in the `src/setup.json`. <br>
+To configure the graph visualisation it is needed to customise the setup file in the `src/setup.json`. <br>
 
 
 ```
