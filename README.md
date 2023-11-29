@@ -1,7 +1,6 @@
 # ReFa Reader Template
 
-<img width="49%" alt="refa reader 1" src="https://github.com/sinanatra/refa-reader-template/assets/20107875/21b956c6-a66a-4b75-8e8c-e0d4ec3c68af">
-<img width="49%" alt="refa reader 2" src="https://github.com/uclab-potsdam/refa-reader-template/assets/20107875/2677533b-edee-42a7-b47b-0cf91a23dc50">
+![refa](https://github.com/sinanatra/refa-reader-template/assets/20107875/10b7a524-8e54-4b36-a704-fa1e4d7efac8)
 
 
 An interactive visualization that juxtaposes essays and graphs. 
