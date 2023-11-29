@@ -20,8 +20,8 @@ cd path/to/my/folder
 
 2. Clone this repository
 ```
-git clone https://github.com/sinanatra/refa-reader-template.git NAME-OF-MY-FOLDER
-cd NAME-OF-MY-FOLDER
+git clone https://github.com/sinanatra/refa-reader-template.git
+cd refa-reader-template
 ```
 
 3. Install dependencies with yarn
