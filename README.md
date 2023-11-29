@@ -1,8 +1,5 @@
 # ReFa Reader Template
 
-> ⚠️ Compared to the [refa-reader](https://github.com/uclab-potsdam/refa-reader) the `@sveltejs/adapter-static` is used to deploy a static build.    
-> All the markdown urls are crawled in the `src/routes/[slug]/+page.js`:
-
 ![Screenshot 2023-11-23 at 12 41 49](https://github.com/uclab-potsdam/refa-reader-template/assets/20107875/2677533b-edee-42a7-b47b-0cf91a23dc50)
 
 
@@ -40,6 +37,8 @@ yarn build
 6. Deploy to Github with : `yarn deploy`
 
 ## Configuration
+> ⚠️ Compared to the [refa-reader](https://github.com/uclab-potsdam/refa-reader) the `@sveltejs/adapter-static` is used to deploy a static build.    
+> All the markdown urls are crawled in the `src/routes/[slug]/+page.js`:
 
 ### Markdowns
 
