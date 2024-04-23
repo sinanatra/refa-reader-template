@@ -160,7 +160,7 @@
 	}
 </script>
 
-<a href="{base}/" class="index" rel="noopener noreferrer"> ← Index </a>
+<a href="{base}/index.html" class="index" rel="noopener noreferrer"> ← Index </a>
 
 <h1>{data.meta.title}</h1>
 
