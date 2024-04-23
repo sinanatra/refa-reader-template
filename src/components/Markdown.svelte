@@ -158,7 +158,15 @@
 	}
 </script>
 
+<a href="/" class="index" rel="noopener noreferrer"> ← Index </a>
+
 <h1>{data.meta.title}</h1>
+
+{#if data.meta?.description}
+	<div class="description">
+		{data.meta?.description}
+	</div>
+{/if}
 <div class="metadata">
 	{#if data.meta?.author}
 		<div class="author">{data.meta.author}</div>
@@ -178,6 +186,33 @@
 		margin-bottom: 0.5rem;
 		font-size: 2em;
 		line-height: 1em;
+	}
+
+	.author,
+	.date,
+	.index {
+		font-size: 1rem;
+	}
+
+	.index {
+		display: block;
+		color: #595959;
+		text-decoration: none;
+		padding-top: 8px;
+	}
+
+	.cover {
+		width: 100%;
+		max-height: 250px;
+		object-fit: contain;
+		padding-top: 10px;
+	}
+
+	.description {
+		padding: 25px 30px 0px 30px;
+		text-align: center;
+		font-family: 'Inter', sans-serif;
+		/* font-weight: bold; */
 	}
 
 	.markdown {
