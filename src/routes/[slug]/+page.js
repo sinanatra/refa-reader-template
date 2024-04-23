@@ -9,7 +9,6 @@ export const load = async ({ fetch }) => {
 
 import { fetchMarkdownData } from '$lib/utils'
 
-export const prerender = true;
 export const entries = async () => {
     const allPosts = await fetchMarkdownData()
     const sortedPosts = allPosts.sort()

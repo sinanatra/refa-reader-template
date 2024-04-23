@@ -18,7 +18,7 @@
 	});
 </script>
 
-{#if config && lang}
+{#if config && lang && data != undefined}
 	<article style="--theme-color:blue">
 		<Language bind:lang languages={config.languages} />
 		<Header
