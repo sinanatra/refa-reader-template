@@ -12,7 +12,8 @@
 	let screenSize;
 
 	let md;
-	let essayData = [];
+	let essayData = [...data.posts].find((d) => d.path.includes($page.params.slug));
+	
 	let triplets, itemsJson;
 	let visibleItemsID = [];
 	let essaysItems = [];
@@ -30,7 +31,6 @@
 	}
 
 	onMount(async () => {
-		essayData = [...data.posts].find((d) => d.path.includes($page.params.slug));
 		itemsJson = await extractLinks(essayData.text);
 		visibleItemsID = itemsJson
 			.filter((obj) => !obj.set)
@@ -146,11 +146,12 @@
 		</article>
 	{/if}
 </div>
+
 <svelte:head>
 	{#if essayData != undefined}
 		<title>{essayData?.meta?.title || config.title}</title>
 		<meta name="description" content={essayData?.meta?.description || config.descriptionSeo} />
-		<meta property="og:url" content={$page.url.origin} />
+		<meta property="og:url" content="{$page.url.origin}{essayData?.path}" />
 		<meta property="og:title" content={essayData?.meta?.title || config.title} />
 		<meta
 			property="og:description"
@@ -158,7 +159,7 @@
 		/>
 		<meta property="og:image" content={essayData?.meta?.cover || config.imageSeo} />
 		<meta name="twitter:card" content="summary_large_image" />
-		<meta property="twitter:url" content={$page.url.origin} />
+		<meta property="twitter:url" content="{$page.url.origin}/{essayData?.path}" />
 		<meta name="twitter:title" content={essayData?.meta?.title || config.title} />
 		<meta
 			name="twitter:description"

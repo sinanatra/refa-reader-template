@@ -14,6 +14,6 @@ export const entries = async () => {
     const sortedPosts = allPosts.sort()
 
     return sortedPosts.map(post => ({
-        slug: post.path.replaceAll("/",""),
+        slug: post.path.replaceAll("/", ""),
     }));
 }
