@@ -1,4 +1,6 @@
 <script>
+	import { base } from '$app/paths';
+
 	import { onMount } from 'svelte';
 	import { graphScroll, selectedMarkdownItem } from '@stores';
 	export let data;
@@ -158,7 +160,7 @@
 	}
 </script>
 
-<a href="/" class="index" rel="noopener noreferrer"> ← Index </a>
+<a href="{base}/" class="index" rel="noopener noreferrer"> ← Index </a>
 
 <h1>{data.meta.title}</h1>
 
