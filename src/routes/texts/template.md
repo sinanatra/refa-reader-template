@@ -6,7 +6,7 @@ author: Giacomo Nanni
 isPublic: true
 lang: en
 description: "Lorem ipsum dolor sit amet, consectetur adipiscing. Sed vel augue viverra, suscipit nisi sagittis, molestie neque."
-cover: "https://uclab.fh-potsdam.de/refa-catalog/files/large/c70c26ab79548a46066efc31bf517afc08127c66.jpg"
+cover: "https://uclab.fh-potsdam.de/refa-catalog/files/large/bbddd54655955eb994e2db8dfc57ef9c85c2cb18.jpg"
 ---
 
 Lorem ipsum dolor sit amet, consectetur [adipiscing](item/9799). Sed vel augue viverra, suscipit nisi sagittis, molestie neque. Fusce tincidunt quam non metus luctus ultrices. Etiam ullamcorper, sapien non lacinia scelerisque, diam diam ultrices nisi, accumsan ornare massa velit a eros. Suspendisse condimentum lectus leo, vel convallis velit ornare id. [Fusce](item/7740) at ipsum non turpis fermentum fermentum. Curabitur convallis erat id ante maximus porttitor. Sed gravida interdum efficitur. Praesent tincidunt quam elit.
