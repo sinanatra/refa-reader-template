@@ -153,7 +153,7 @@
 		<meta name="description" content={essayData?.meta?.description || config.descriptionSeo} />
 		<meta
 			property="og:url"
-			content={essayData?.meta?.url + essayData?.path || config.url + essayData?.path}
+			content={config?.url + essayData?.path || config.url + essayData?.path}
 		/>
 
 		<meta
@@ -164,7 +164,7 @@
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta
 			property="twitter:url"
-			content={essayData?.meta?.url + essayData?.path || config.url + essayData?.path}
+			content={config?.url + essayData?.path || config.url + essayData?.path}
 		/>
 		<meta name="twitter:title" content={essayData?.meta?.title || config.title} />
 		<meta
