@@ -1,6 +1,7 @@
 {
     "title": "ReFa Reader",
     "api": "https://uclab.fh-potsdam.de/refa-catalog/api",
+    "url": "https://sinanatra.github.io/refa-reader-template/",
     "publicSite": "",
     "languages": [
         "en"

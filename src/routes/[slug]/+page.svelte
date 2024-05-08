@@ -13,7 +13,7 @@
 
 	let md;
 	let essayData = [...data.posts].find((d) => d.path.includes($page.params.slug));
-	
+
 	let triplets, itemsJson;
 	let visibleItemsID = [];
 	let essaysItems = [];
@@ -151,15 +151,21 @@
 	{#if essayData != undefined}
 		<title>{essayData?.meta?.title || config.title}</title>
 		<meta name="description" content={essayData?.meta?.description || config.descriptionSeo} />
-		<meta property="og:url" content="{$page.url.origin}{essayData?.path}" />
-		<meta property="og:title" content={essayData?.meta?.title || config.title} />
+		<meta
+			property="og:url"
+			content={essayData?.meta?.title + essayData?.path || config.title + essayData?.path}
+		/>
+
 		<meta
 			property="og:description"
 			content={essayData?.meta?.description || config.descriptionSeo}
 		/>
 		<meta property="og:image" content={essayData?.meta?.cover || config.imageSeo} />
 		<meta name="twitter:card" content="summary_large_image" />
-		<meta property="twitter:url" content="{$page.url.origin}/{essayData?.path}" />
+		<meta
+			property="twitter:url"
+			content={essayData?.meta?.title + essayData?.path || config.title + essayData?.path}
+		/>
 		<meta name="twitter:title" content={essayData?.meta?.title || config.title} />
 		<meta
 			name="twitter:description"
