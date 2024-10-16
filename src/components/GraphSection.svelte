@@ -57,9 +57,8 @@
 					.replace(/\/item_sets\//, '/resources/')
 		);
 
-		console.log(data, node.target);
 
-		//Fetch the items in the set
+		//Fetch the items in the set // just for omeka s
 		if (data?.['o:items'] && $graphSteps.length == 1) {
 			let setData = [];
 			const items = data['o:items']['@id'];
@@ -85,7 +84,7 @@
 
 			let setItems = setData.map((d) => {
 				return {
-					title: d['o:title'],
+					title: d[config.paths.title],
 					'@id': d['@id'],
 					thumbnail_display_urls: getNestedValue(d, config.paths.img.join('.'))
 				};

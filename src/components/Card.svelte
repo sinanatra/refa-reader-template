@@ -30,15 +30,23 @@
 	}
 
 	function getImageByNode(node) {
-		const id = node.split('/');
-		const datum = $entities.find((d) => d['o:id'] == id.slice(-1)[0]);
+		const id = node;
+		const datum = $entities.find((d) => {
+			return d['@id'] == id;
+		});
 		return getNestedValue(datum, config.paths.img.join('.'));
 	}
 
+	// function getImageByNode(node) {
+	// 	const id = node.split('/');
+	// 	const datum = $entities.find((d) => d['o:id'] == id.slice(-1)[0]);
+	// 	return datum?.thumbnail_display_urls?.large;
+	// }
+
 	$: {
-		if ($entities) {
-			imageSrc = getImageByNode(datum.target);
-		}
+		imageSrc = getImageByNode(datum.target);
+		// if ($entities) {
+		// }
 	}
 
 	$: source = datum.source.split('/').slice(-1)[0];
