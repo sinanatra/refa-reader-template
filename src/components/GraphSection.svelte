@@ -3,6 +3,7 @@
 	import Card from '@components/Card.svelte';
 	import Paths from '@components/Paths.svelte';
 	import { graphSteps } from '@stores';
+	import { db } from '@db';
 	import { json } from '@sveltejs/kit';
 	import { createTriplets } from '@utils';
 	export let category;
@@ -41,15 +42,43 @@
 
 		let columnNodes = $graphSteps.map((obj) => obj.data).flat();
 
-		const response = await fetch(node.target);
-		const data = await response.json();
+		// const response = await fetch(node.target);
+		// const data = await response.json();
+
+		const data = $db.find(
+			(d) =>
+				d['@id']
+					.replace(/\/items\//, '/resources/')
+					.replace(/\/media\//, '/resources/')
+					.replace(/\/item_sets\//, '/resources/') ===
+				node.target
+					.replace(/\/items\//, '/resources/')
+					.replace(/\/media\//, '/resources/')
+					.replace(/\/item_sets\//, '/resources/')
+		);
+
+		console.log(data, node.target);
 
 		//Fetch the items in the set
 		if (data?.['o:items'] && $graphSteps.length == 1) {
 			let setData = [];
 			const items = data['o:items']['@id'];
-			const responseSet = await fetch(items);
-			const jsonSet = await responseSet.json();
+			// const responseSet = await fetch(items);
+			// const jsonSet = await responseSet.json();
+
+			// check this
+			const jsonSet = $db.find(
+				(d) =>
+					d['@id']
+						.replace(/\/items\//, '/resources/')
+						.replace(/\/media\//, '/resources/')
+						.replace(/\/item_sets\//, '/resources/') ===
+					node.target
+						.replace(/\/items\//, '/resources/')
+						.replace(/\/media\//, '/resources/')
+						.replace(/\/item_sets\//, '/resources/')
+			);
+
 			jsonSet.forEach((item) => {
 				setData.push(item);
 			});
@@ -69,7 +98,7 @@
 		selectedTriplets = await createTriplets([{ data }]);
 
 		let selectedTripletsData = selectedTriplets.links.filter((d) => {
-			return d.source === node.target || d.target === node.target;
+			return d.source == node.target || d.target == node.target;
 		});
 
 		let newNodes = updateNodes([...defaultNodes, ...columnNodes], selectedTripletsData);

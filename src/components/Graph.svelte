@@ -1,6 +1,7 @@
 <script>
 	import { onMount, afterUpdate } from 'svelte';
 	import { graphSteps, graphScroll } from '@stores';
+	import { db } from '@db';
 	import { writable } from 'svelte/store';
 	import GraphSection from '@components/GraphSection.svelte';
 
@@ -16,7 +17,7 @@
 	let scrollTopVal;
 	const entities = writable([]);
 
-	let batchSize = config.batch; // cant be more than the pagination in omeka s
+	let batchSize = config.batch;
 	let graph;
 	let markdownNodes = data.nodes.filter((d) => visibleItemsID.includes(d.id));
 
@@ -37,7 +38,7 @@
 			return {
 				img: d.data?.thumbnail_display_urls.large,
 				source: `item_${d.id}`,
-				target: `${config.api}/resources/${d.id}`,
+				target: d.data?.['@id'],
 				title: d.data?.['o:title'] || ''
 			};
 		});
@@ -56,17 +57,20 @@
 
 	async function loadData(nodes, batchSize) {
 		const ids = nodes.map((d) => {
-			const id = d?.id?.split('/') || d?.target?.split('/');
-			return id.slice(-1)[0];
+			// const id = d?.id?.split('/') || d?.target?.split('/');
+			return d.id || d?.target;
 		});
 
 		const numBatches = Math.ceil(ids.length / batchSize);
 
 		for (let i = 0; i < numBatches; i++) {
 			const batchIds = ids.slice(i * batchSize, (i + 1) * batchSize);
-			let query = `${config.api}/items?${batchIds.map((id) => `id[]=${id}`).join('&')}`;
-			let response = await fetch(query);
-			let jsonItems = await response.json();
+
+			// let query = `${config.api}/items?${batchIds.map((id) => `id[]=${id}`).join('&')}`;
+			// let response = await fetch(query);
+			// let jsonItems = await response.json();
+
+			let jsonItems = $db.filter((d) => ids.includes(d['@id']) || nodes.includes(d['@id']));
 
 			entities.update((items) => {
 				if (!items.includes(...jsonItems)) {
@@ -74,20 +78,6 @@
 				}
 				return items;
 			});
-
-			// BUG: query for /resources/ to get also the medias. So far it's not possible in Omeka-S / wait for the next release
-			if (jsonItems.length != batchIds.length) {
-				query = `${config.api}/media?${batchIds.map((id) => `id[]=${id}`).join('&')}`;
-				response = await fetch(query);
-				jsonItems = await response.json();
-
-				entities.update((items) => {
-					if (!items.includes(...jsonItems)) {
-						items.push(...jsonItems);
-					}
-					return items;
-				});
-			}
 		}
 	}
 
@@ -131,7 +121,7 @@
 				`.node-highlite[data-id="${secondInGraphId}"]`
 			)?.offsetTop;
 			let percentageDistance = getPercentageDistance(scrollTopVal, firstInGraph, secondInGraph);
-			let pixelDiscance = getPixelDistance(percentageDistance, firstInEssay, secondInEssay);
+			let pixelDistance = getPixelDistance(percentageDistance, firstInEssay, secondInEssay);
 			const selectedItem = document.querySelector('.markdown__container');
 
 			if (scrollTopVal > secondInGraph) {
@@ -142,13 +132,14 @@
 				idx--;
 			}
 
-			if (selectedItem && pixelDiscance && firstInGraph !== secondInGraph && pixelDiscance > 0) {
+			if (selectedItem && pixelDistance && firstInGraph !== secondInGraph && pixelDistance > 0) {
 				selectedItem?.scrollTo({
-					top: pixelDiscance
+					top: pixelDistance
 				});
 			}
 		}
 	}
+
 	function getPercentageDistance(scrollTop, firstPoint, secondPoint) {
 		const totalDistance = secondPoint - firstPoint;
 		const distanceFromFirst = scrollTop - firstPoint;
@@ -178,7 +169,6 @@
 					col0.addEventListener('scroll', (event) => {
 						scrollTopVal = col0?.scrollTop;
 					});
-					// getPaginatedData(index, col);
 					handlePosition();
 				}}
 				on:click={() => {
@@ -240,8 +230,8 @@
 						{#if step.paginate.length < step.new.length}
 							<div
 								class="more"
-								on:click={getPaginatedData(index, col)}
-								on:keydown={getPaginatedData(index, col)}
+								on:click={() => getPaginatedData(index, col)}
+								on:keydown={() => getPaginatedData(index, col)}
 							>
 								Load more
 							</div>
@@ -284,7 +274,6 @@
 	.loading,
 	.no-items {
 		font-size: 1rem;
-		/* font-family: 'Redaction', serif; */
 		text-align: center;
 		color: gainsboro;
 		height: calc(100vh - 20px);
@@ -326,7 +315,6 @@
 		height: fit-content;
 		max-height: calc(100vh - 20px);
 		margin-left: 12vw;
-		/* flex-basis: 220px; */
 		overflow: scroll;
 		flex-grow: 0;
 		flex-shrink: 0;

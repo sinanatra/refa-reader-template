@@ -6,11 +6,13 @@
 	import { page } from '$app/stores';
 	import { writable } from 'svelte/store';
 	import { items, hoverNode, scrollX, graphScroll } from '@stores';
+	import { db, loadDb } from '@db'; // Import the db store and loadDb function
+
 	import { onMount } from 'svelte';
 	import { extractLinks, createTriplets } from '@utils';
 	export let data;
-	let screenSize;
 
+	let screenSize;
 	let md;
 	let essayData = [...data.posts].find((d) => d.path.includes($page.params.slug));
 
@@ -31,17 +33,23 @@
 	}
 
 	onMount(async () => {
-		itemsJson = await extractLinks(essayData.text);
-		visibleItemsID = itemsJson
-			.filter((obj) => !obj.set)
-			.map((obj) => `${config.api}/resources/${obj.data?.['o:id']}`);
-		triplets = await createTriplets(itemsJson);
-		$items = triplets;
+		await loadDb();
+		$items = [];
 
-		const storedLanguage = localStorage.getItem('selectedLanguage');
+		const unsubscribe = db.subscribe(async (dbData) => {
+			if (dbData.length > 0) {
+				itemsJson = await extractLinks(essayData.text, dbData);
+				visibleItemsID = itemsJson.filter((obj) => !obj.set).map((obj) => `${obj.data?.['@id']}`);
+
+				triplets = await createTriplets(itemsJson);
+
+				$items = triplets;
+			}
+		});
+
+		const storedLanguage = localStorage.getItem('selectedLanguage') || config.languages?.[0];
 
 		essaysItems = data.posts.reduce((result, item) => {
-			// ignore current path and filter by lang
 			if (!item.path.includes($page.params.slug) && item.meta.lang == storedLanguage) {
 				item.links.map((link) => {
 					const existingEntry = result.find((entry) => entry.id === link);
@@ -51,8 +59,9 @@
 						url: item.path
 					};
 
+
+
 					if (existingEntry) {
-						// Check if the essay doesn't already exist in the 'essays' array
 						if (
 							!existingEntry.essays.some(
 								(existingEssay) =>
@@ -71,6 +80,10 @@
 			}
 			return result;
 		}, []);
+
+
+
+		return () => unsubscribe();
 	});
 </script>
 
