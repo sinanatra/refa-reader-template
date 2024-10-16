@@ -85,9 +85,9 @@
 
 			let setItems = setData.map((d) => {
 				return {
-					'o:title': d['o:title'],
+					title: d['o:title'],
 					'@id': d['@id'],
-					thumbnail_display_urls: d['thumbnail_display_urls']
+					thumbnail_display_urls: getNestedValue(d, config.paths.img.join('.'))
 				};
 			});
 

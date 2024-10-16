@@ -99,8 +99,8 @@ export function parseJSONLD(jsonLD, set) {
         triplets.push({
             source: set["@id"],
             target: source,
-            img: jsonLD?.thumbnail_display_urls?.large,
-            title: jsonLD["o:title"],
+            img: getNestedValue(jsonLD, config.paths.img.join('.')),
+            title: jsonLD[config.title],
         });
     }
 
@@ -111,14 +111,14 @@ export function parseJSONLD(jsonLD, set) {
 
     const parseRecursive = function (obj) {
         for (let key in obj) {
-            if (key === "@id" && (obj["o:title"] || obj.display_title || reverse)) {
+            if (key === "@id" && (obj[config.paths.title] || obj.display_title || reverse)) {
                 let target = obj["@id"];
 
 
                 target = target.replace(/\/items\//, '/resources/').replace(/\/media\//, '/resources/').replace(/\/item_sets\//, '/resources/');
 
-                const title = obj["o:title"] || obj.display_title;
-                const img = obj?.thumbnail_url || obj?.thumbnail_display_urls?.large;
+                const title = obj[config.paths.title] || obj.display_title;
+                const img = obj?.thumbnail_url || getNestedValue(obj, config.paths.img.join('.'));
 
                 let property = obj["property_label"]?.replace("_", " ")?.replace(regex, '') || parentKey?.replace(regex, '');
 
@@ -151,4 +151,9 @@ export function parseJSONLD(jsonLD, set) {
 
     parseRecursive(jsonLD);
     return triplets;
+}
+
+
+export function getNestedValue(obj, path) {
+    return path.split('.').reduce((o, key) => (o || {})[key], obj);
 }

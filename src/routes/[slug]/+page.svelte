@@ -162,7 +162,7 @@
 
 <svelte:head>
 	{#if essayData != undefined}
-		<title>{essayData?.meta?.title || config.title}</title>
+		<title>{essayData?.meta?.title || config.paths.title}</title>
 		<meta name="description" content={essayData?.meta?.description || config.descriptionSeo} />
 		<meta
 			property="og:url"
@@ -179,7 +179,7 @@
 			property="twitter:url"
 			content={config?.url + essayData?.path || config.url + essayData?.path}
 		/>
-		<meta name="twitter:title" content={essayData?.meta?.title || config.title} />
+		<meta name="twitter:title" content={essayData?.meta?.title || config.paths.title} />
 		<meta
 			name="twitter:description"
 			content={essayData?.meta?.description || config.descriptionSeo}

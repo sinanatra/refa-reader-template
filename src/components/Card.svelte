@@ -1,5 +1,7 @@
 <script>
 	import { graphSteps, hoverNode, selectedMarkdownItem } from '@stores';
+	import { getNestedValue } from '@utils';
+	import * as config from '@setup';
 	import { onDestroy, afterUpdate } from 'svelte';
 	export let datum;
 	export let entities;
@@ -30,7 +32,7 @@
 	function getImageByNode(node) {
 		const id = node.split('/');
 		const datum = $entities.find((d) => d['o:id'] == id.slice(-1)[0]);
-		return datum?.thumbnail_display_urls?.large;
+		return getNestedValue(datum, config.paths.img.join('.'));
 	}
 
 	$: {

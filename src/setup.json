@@ -3,6 +3,13 @@
     "api": "",
     "local": "db.json",
     "url": "https://sinanatra.github.io/refa-reader-template",
+    "paths": {
+        "title": "o:title",
+        "img": [
+            "thumbnail_display_urls",
+            "large"
+        ]
+    },
     "publicSite": "",
     "languages": [
         "en"
@@ -14,5 +21,4 @@
     "mainCategories": [],
     "descriptionSeo": "Lorem ipsum dolor sit amet.",
     "imageSeo": "https://uclab.fh-potsdam.de/refa-catalog/files/large/c70c26ab79548a46066efc31bf517afc08127c66.jpg"
-
 }

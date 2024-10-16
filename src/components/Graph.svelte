@@ -39,7 +39,7 @@
 				img: d.data?.thumbnail_display_urls.large,
 				source: `item_${d.id}`,
 				target: d.data?.['@id'],
-				title: d.data?.['o:title'] || ''
+				title: d.data?.[config.paths.title] || ''
 			};
 		});
 
