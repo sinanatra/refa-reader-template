@@ -4,7 +4,7 @@
 
 
 An interactive visualization that juxtaposes essays and graphs. 
-It allows readers to browse items from Omeka-S-based collections, by accessing them through a curated selection of texts designed to provide better understanding, combining editorial approaches with free exploration and user-driven granularity.
+It allows readers to browse JSON-LD data (It works with Omeka-S based collections), by accessing them through a curated selection of texts designed to provide better understanding, combining editorial approaches with free exploration and usear-driven granularity.
 
 ## Installation
 ### Project setup
@@ -37,7 +37,10 @@ yarn build
 6. Deploy to Github with : `yarn deploy`
 
 ## Configuration
-> ⚠️ Compared to the [refa-reader](https://github.com/uclab-potsdam/refa-reader) the `@sveltejs/adapter-static` is used to deploy a static build.    
+> ⚠️ Compared to the [refa-reader](https://github.com/uclab-potsdam/refa-reader) the `@sveltejs/adapter-static` is used to deploy a static build.
+
+> ⚠️ By default the refa-reader works with Omeka-S. If you want to work with a custom JSON-LD file, use this [branch](https://github.com/sinanatra/refa-reader-template/tree/local-data)
+
 > All the markdown urls are crawled in the `src/routes/[slug]/+page.js`:
 
 ### Markdowns
@@ -66,6 +69,14 @@ To configure the graph visualisation it is needed to customise the setup file in
 {
     "title": "The title of the Website",
     "api": "https://exampe.com/api", // The link to a Omeka S Api
+    "local": "db.json", // Alternatively, the path to the JSON-LD
+     "paths": { // customise the property for the resource title and images
+        "title": "o:title", 
+        "img": [
+            "thumbnail_display_urls",
+            "large"
+        ]
+    },
     "publicSite": "", // The link of an Omeka-S collection 
     "languages": ["en"],
     "description": {
