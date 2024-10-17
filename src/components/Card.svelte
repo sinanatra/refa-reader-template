@@ -29,6 +29,10 @@
 		$updatePosition = true;
 	}
 
+	function handleError(event) {
+		event.target.style.display = 'none'; // Hide image on error
+	}
+
 	function getImageByNode(node) {
 		const id = node;
 		const datum = $entities.find((d) => {
@@ -37,16 +41,8 @@
 		return getNestedValue(datum, config.paths.img.join('.'));
 	}
 
-	// function getImageByNode(node) {
-	// 	const id = node.split('/');
-	// 	const datum = $entities.find((d) => d['o:id'] == id.slice(-1)[0]);
-	// 	return datum?.thumbnail_display_urls?.large;
-	// }
-
 	$: {
 		imageSrc = getImageByNode(datum.target);
-		// if ($entities) {
-		// }
 	}
 
 	$: source = datum.source.split('/').slice(-1)[0];
@@ -94,17 +90,25 @@
 	on:focus
 >
 	{#if datum.img}
-		<img src={datum.img.replace('square', 'large')} alt={datum.title} on:load={handleLoad} />
-		<div class="title">{datum.title}</div>
+		<img
+			src={datum.img.replace('square', 'large')}
+			alt={datum.title}
+			on:load={handleLoad}
+			on:error={handleError}
+		/>
+		{#if datum.title}
+			<div class="title">{datum.title}</div>
+		{/if}
 	{:else if imageSrc}
-		<img src={imageSrc} alt={datum.title} on:load={handleLoad} />
-		<div class="title">{datum.title || ''}</div>
+		<img src={imageSrc} alt={datum.title} on:load={handleLoad} on:error={handleError} />
+		{#if datum.title}
+			<div class="title">{datum.title || ''}</div>
+		{/if}
 	{:else}
 		<div class="title">{datum.title || ''}</div>
 	{/if}
 
 	<!-- Links -->
-
 	{#if essaysItemsLinks != undefined}
 		{#each essaysItemsLinks.essays as d}
 			<a class="link" href={d.url} target="_blank" rel="noopener noreferrer">
@@ -138,11 +142,8 @@
 
 	.node:hover,
 	.selected {
-		/* background-color: var(--theme-color);
-		color: white; */
 		background-color: white;
 		color: black;
-		/* box-shadow: inset 0px 0px 6px 1px var(--theme-color); */
 		box-shadow: inset -1px 1px 13px 0px var(--theme-color);
 		opacity: 1;
 	}
@@ -156,7 +157,6 @@
 		margin-top: 1rem;
 		margin-bottom: 0.5rem;
 		font-size: 0.7rem;
-		/* line-height: 0.7; */
 		display: none;
 		padding-bottom: 1rem;
 		border-bottom: 1px solid gainsboro;
@@ -173,7 +173,6 @@
 	}
 
 	.linkToEssay {
-		border: 2px dotted var(--theme-color);
 		border: 1px solid var(--theme-color);
 		box-shadow: inset -1px 1px 13px 0px var(--theme-color);
 	}
