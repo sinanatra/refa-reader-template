@@ -57,7 +57,6 @@
 					.replace(/\/item_sets\//, '/resources/')
 		);
 
-
 		//Fetch the items in the set // just for omeka s
 		if (data?.['o:items'] && $graphSteps.length == 1) {
 			let setData = [];

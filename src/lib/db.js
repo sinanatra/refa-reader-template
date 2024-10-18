@@ -12,10 +12,11 @@ export async function loadDb() {
         db.set(data.map((d) => {
             return {
                 ...d,
+                // only for omeka
                 "@id": d["@id"]
-                    .replace(/\/items\//, '/resources/')
-                    .replace(/\/media\//, '/resources/')
-                    .replace(/\/item_sets\//, '/resources/')
+                    ?.replace(/\/items\//, '/resources/')
+                    ?.replace(/\/media\//, '/resources/')
+                    ?.replace(/\/item_sets\//, '/resources/')
             };
         }));
 

@@ -12,10 +12,11 @@ export async function extractLinks(markdown, mdData) {
         } else {
             const label = match[3];
             const url = match[2];
-            const id = url.split("/")[1];
+            const id = url.split("/")[1] || url.split("/")[0];
 
             links.push({
-                label, id,
+                label,
+                id,
                 url
             });
         }
@@ -53,11 +54,12 @@ function getItemsFromDbById(ids, mdData, type) {
 
     return mdData.filter(item => {
         const id = item["@id"];
-        const idWithoutBaseUrl = id.split('/').pop();
+        const idWithoutBaseUrl = id?.split('/').pop();
 
         return ids.includes(idWithoutBaseUrl);
     }).map(item => {
-        item["@id"] = item["@id"].replace(/\/items\//, '/resources/').replace(/\/media\//, '/resources/').replace(/\/item_sets\//, '/resources/');
+        // only for omeka
+        item["@id"] = item["@id"]?.replace(/\/items\//, '/resources/')?.replace(/\/media\//, '/resources/')?.replace(/\/item_sets\//, '/resources/');
         return item;
     });
 }
@@ -120,7 +122,7 @@ export function parseJSONLD(jsonLD, set) {
                 const title = obj[config.paths.title] || obj.display_title;
                 const img = obj?.thumbnail_url || getNestedValue(obj, config.paths.img.join('.'));
 
-                let property = obj["property_label"]?.replace("_", " ")?.replace(regex, '') || parentKey?.replace(regex, '');
+                let property = obj[config.property]?.replace("_", " ")?.replace(regex, '') || parentKey?.replace(regex, '');
 
                 const exists = triplets.some(triplet => triplet.source === source && triplet.target === target);
 

@@ -59,8 +59,6 @@
 						url: item.path
 					};
 
-
-
 					if (existingEntry) {
 						if (
 							!existingEntry.essays.some(
@@ -80,8 +78,6 @@
 			}
 			return result;
 		}, []);
-
-
 
 		return () => unsubscribe();
 	});

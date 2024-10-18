@@ -229,7 +229,7 @@
 		font-weight: 400;
 		padding-bottom: 40vh;
 		padding-top: 5vh;
-		font-size: 1.4rem;
+		font-size: 1.2rem;
 		line-height: 1.35;
 	}
 	.metadata {
