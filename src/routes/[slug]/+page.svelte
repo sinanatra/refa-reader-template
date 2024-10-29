@@ -40,7 +40,6 @@
 			if (dbData.length > 0) {
 				itemsJson = await extractLinks(essayData.text, dbData);
 				visibleItemsID = itemsJson.filter((obj) => !obj.set).map((obj) => `${obj.data?.['@id']}`);
-
 				triplets = await createTriplets(itemsJson);
 
 				$items = triplets;

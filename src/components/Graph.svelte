@@ -2,6 +2,7 @@
 	import { onMount, afterUpdate } from 'svelte';
 	import { graphSteps, graphScroll } from '@stores';
 	import { db } from '@db';
+	import { getNestedValue } from '@utils';
 	import { writable } from 'svelte/store';
 	import GraphSection from '@components/GraphSection.svelte';
 
@@ -36,7 +37,7 @@
 		.filter((d) => d?.data)
 		.map((d) => {
 			return {
-				img: d.data?.thumbnail_display_urls.large,
+				img: getNestedValue(d.data, config.paths.img.join('.')),
 				source: `item_${d.id}`,
 				target: d.data?.['@id'],
 				title: d.data?.[config.paths.title] || ''

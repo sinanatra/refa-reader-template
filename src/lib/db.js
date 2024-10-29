@@ -20,6 +20,7 @@ export async function loadDb() {
             };
         }));
 
+
     } catch (error) {
         console.error('Error loading db.json:', error);
     }

@@ -22,7 +22,7 @@
 	$: highlite = datum.target == identifier || datum.source == identifier ? 'highlite' : '';
 
 	function getBounds(datum, p = 0, el) {
-		const id = datum.split('/').slice(-1)[0];
+		const id = datum; //?.split('/')?.slice(-1)[0];
 		const elements = [...document.querySelectorAll(`.node[data-id="${id}"]`)];
 		const bounds = [];
 		elements.forEach((element) => {
@@ -88,7 +88,8 @@
 					d: d,
 					label: label,
 					selected: selected,
-					datum: { source: datum.source.split('/').at(-1), target: datum.target.split('/').at(-1) },
+					// datum: { source: datum.source.split('/').at(-1), target: datum.target.split('/').at(-1) },
+					datum: { source: datum.source, target: datum.target },
 					reverse: datum?.reverse
 				});
 			});
@@ -101,8 +102,10 @@
 	});
 </script>
 
-<div
+<!-- <div
 	bind:this={item}
-	source={datum.source.split('/').slice(-1)[0]}
-	target={datum.target.split('/').slice(-1)[0]}
-/>
+	source={datum.source?.split('/')?.slice(-1)[0]}
+	target={datum.target?.split('/')?.slice(-1)[0]}
+/> -->
+
+<div bind:this={item} source={datum.source} target={datum.target} />

@@ -81,6 +81,7 @@
 				setData.push(item);
 			});
 
+			// omeka s
 			let setItems = setData.map((d) => {
 				return {
 					title: d[config.paths.title],
@@ -172,10 +173,10 @@
 								<Card {site} {entities} {updatePosition} {datum} {essaysItems} {openNode} />
 							</a>
 						{/if}
-						<Paths {datum} {updatePosition} label={datum?.property || ''} />
+						<Paths {datum} {updatePosition} label={datum?.property?.replace(config.url, '') || ''} />
 					{/if}
 				{:else if datum.source && datum.target && datum.source != datum.target}
-					<Paths {datum} {updatePosition} label={datum?.property || ''} />
+					<Paths {datum} {updatePosition} label={datum?.property?.replace(config.url, '') || ''} />
 				{/if}
 			{/each}
 		{/if}

@@ -1,5 +1,6 @@
 <script>
 	import { base } from '$app/paths';
+	import * as config from '@setup';
 
 	import { onMount } from 'svelte';
 	import { graphScroll, selectedMarkdownItem } from '@stores';
@@ -14,14 +15,14 @@
 	const htmlWithCustomLinks = htmlText.replace(
 		/<a\s+href="([^"]+)"[^>]*>([^<]+)<\/a>/g,
 		(match, href, text) => {
-			if (href.startsWith('http')) {
+			if (href.startsWith('http') & !href.startsWith(config.url)) {
 				return `<a class="external" target="_blank" href="${href}" title="${text}">${text}</a>`;
 			} else {
 				// let uniqueId = newUniqueId();
-				let uniqueId = href.split('/')[1];
-				return `<a class="node-highlite" unique-id="${uniqueId}" id="${href.split('/')[1]}"
-				data-id="${href.split('/')[1]}" title="${text}">${text}
-				<span class="symbol node" unique-id="${uniqueId}" data-id="item_${href.split('/')[1]}"
+				let uniqueId = href; //.split('/')[1];
+				return `<a class="node-highlite" unique-id="${uniqueId}" id="${href}"
+				data-id="${href}" title="${text}">${text}
+				<span class="symbol node" unique-id="${uniqueId}" data-id="item_${href}"
 				data-class="${items
 					.filter((d) => d.label == text)
 					.map((d) => {

@@ -7,39 +7,36 @@ export async function extractLinks(markdown, mdData) {
 
     let match;
     while ((match = regex.exec(markdown))) {
-        if (match[2].includes("http")) {
+        if (match[2].includes("http") && !match[2].includes(config.url)) {
             continue;
         } else {
             const label = match[3];
             const url = match[2];
-            const id = url.split("/")[1] || url.split("/")[0];
+            // const id = url.split("/")[1] || url.split("/")[0];
+            // console.log(label, id, url)
 
             links.push({
                 label,
-                id,
-                url
+                id: url,
+                url: url,
+                data: []
             });
         }
     }
 
 
-    const itemUrls = links.filter(link => link.url.includes("item/")).map(link => link.id);
-    const setUrls = links.filter(link => link.url.includes("set/")).map(link => link.id);
-    const mediaUrls = links.filter(link => link.url.includes("media/")).map(link => link.id);
+    const allUrls = links.filter(link => link.url).map(link => link.id);
 
 
-    const parseItems = [
-        ...getItemsFromDbById(itemUrls, mdData, 'items'),
-        ...getItemsFromDbById(mediaUrls, mdData, 'media'),
-        ...getItemsFromDbById(setUrls, mdData, 'sets')
+    let parseItems = [
+        ...getItemsFromDbById(allUrls, mdData, 'items'),
     ];
 
 
 
-    for (let i = 0; i < parseItems.length; i++) {
-        const link = links.find(d => parseItems[i]["@id"].includes(d.id));
+    for (let i = 0; i < links.length; i++) {
+        const link = links.find(d => parseItems[i]?.["@id"].includes(d.id));
         const json = parseItems[i];
-
         if (link) {
             link.uniqueId = newUniqueId();
             link.data = json;
@@ -54,9 +51,9 @@ function getItemsFromDbById(ids, mdData, type) {
 
     return mdData.filter(item => {
         const id = item["@id"];
-        const idWithoutBaseUrl = id?.split('/').pop();
+        // const idWithoutBaseUrl = id?.split('/').pop();
 
-        return ids.includes(idWithoutBaseUrl);
+        return ids.includes(id);
     }).map(item => {
         // only for omeka
         item["@id"] = item["@id"]?.replace(/\/items\//, '/resources/')?.replace(/\/media\//, '/resources/')?.replace(/\/item_sets\//, '/resources/');
@@ -70,11 +67,14 @@ export async function createTriplets(data) {
     for (let i = 0; i < data.length; i++) {
         if (data[i].data) {
             let jsonLD = data[i].data;
-            let set = data[i].set || null;
+            let set = data[i].set || null; // omeka-s
             let triplets = parseJSONLD(jsonLD, set);
+
             allTriplets = [...allTriplets, ...triplets];
         }
     }
+
+
 
     const graph = {
         nodes: allTriplets.reduce((acc, curr) => {
@@ -97,6 +97,7 @@ export function parseJSONLD(jsonLD, set) {
     let source = jsonLD["@id"];
 
 
+    // omeka s
     if (set) {
         triplets.push({
             source: set["@id"],
@@ -113,14 +114,15 @@ export function parseJSONLD(jsonLD, set) {
 
     const parseRecursive = function (obj) {
         for (let key in obj) {
-            if (key === "@id" && (obj[config.paths.title] || obj.display_title || reverse)) {
+
+            if (key === "@id" || key === "@value" && (obj[config.paths.title] || obj.display_title || reverse)) {
                 let target = obj["@id"];
 
 
-                target = target.replace(/\/items\//, '/resources/').replace(/\/media\//, '/resources/').replace(/\/item_sets\//, '/resources/');
+                target = target?.replace(/\/items\//, '/resources/').replace(/\/media\//, '/resources/').replace(/\/item_sets\//, '/resources/');
 
-                const title = obj[config.paths.title] || obj.display_title;
-                const img = obj?.thumbnail_url || getNestedValue(obj, config.paths.img.join('.'));
+                const title = obj[config.paths.title] || obj.display_title; // omeka s
+                const img = obj?.thumbnail_url || getNestedValue(obj, config.paths.img.join('.')); // omeka s
 
                 let property = obj[config.property]?.replace("_", " ")?.replace(regex, '') || parentKey?.replace(regex, '');
 
@@ -134,9 +136,12 @@ export function parseJSONLD(jsonLD, set) {
                         img,
                         property,
                         reverse,
+                        external: target.includes(config.url) ? false : true
+
                     });
                 }
-            } else if (typeof obj[key] === "object") {
+            }
+            else if (typeof obj[key] === "object") {
                 if (isNaN(key)) {
                     const parts = key?.split(":");
                     const label = parts[1]?.split("_")?.join(" ");
@@ -152,6 +157,7 @@ export function parseJSONLD(jsonLD, set) {
     };
 
     parseRecursive(jsonLD);
+
     return triplets;
 }
 

@@ -45,8 +45,8 @@
 		imageSrc = getImageByNode(datum.target);
 	}
 
-	$: source = datum.source.split('/').slice(-1)[0];
-	$: target = datum.target.split('/').slice(-1)[0];
+	$: source = datum?.source; //?.split('/').slice(-1)[0];
+	$: target = datum?.target; //?.split('/').slice(-1)[0];
 
 	$: essaysItemsLinks = essaysItems.find((d) => d.id == target);
 	$: selected = $graphSteps.some((d) => d?.id == datum.target);
@@ -97,15 +97,15 @@
 			on:error={handleError}
 		/>
 		{#if datum.title}
-			<div class="title">{datum.title}</div>
+			<div class="title">{datum.title?.replace(config.url, '')}</div>
 		{/if}
 	{:else if imageSrc}
 		<img src={imageSrc} alt={datum.title} on:load={handleLoad} on:error={handleError} />
 		{#if datum.title}
-			<div class="title">{datum.title || ''}</div>
+			<div class="title">{datum.title?.replace(config.url, '') || ''}</div>
 		{/if}
 	{:else}
-		<div class="title">{datum.title || ''}</div>
+		<div class="title">{datum.title?.replace(config.url, '') || ''}</div>
 	{/if}
 
 	<!-- Links -->
