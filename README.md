@@ -1,5 +1,8 @@
 # ReFa Reader Template
 
+> ⚠️ By default the refa-reader works with Omeka-S. If you want to work with a custom JSON-LD file, use this [repository](https://github.com/sinanatra/refa-reader-template-local)
+
+
 ![refa](https://github.com/sinanatra/refa-reader-template/assets/20107875/10b7a524-8e54-4b36-a704-fa1e4d7efac8)
 
 
@@ -38,8 +41,6 @@ yarn build
 
 ## Configuration
 > ⚠️ Compared to the [refa-reader](https://github.com/uclab-potsdam/refa-reader) the `@sveltejs/adapter-static` is used to deploy a static build.
-
-> ⚠️ By default the refa-reader works with Omeka-S. If you want to work with a custom JSON-LD file, use this [branch](https://github.com/sinanatra/refa-reader-template/tree/local-data)
 
 > All the markdown urls are crawled in the `src/routes/[slug]/+page.js`:
 
